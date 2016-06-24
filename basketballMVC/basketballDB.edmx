@@ -1,0 +1,636 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="bballtest2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="GameID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GameTime" Type="time" Precision="7" />
+          <Property Name="GameDate" Type="date" Nullable="false" />
+          <Property Name="Team1_ID" Type="int" Nullable="false" />
+          <Property Name="Team2_ID" Type="int" Nullable="false" />
+          <Property Name="Team1_score" Type="int" Nullable="false" />
+          <Property Name="Team2_score" Type="int" Nullable="false" />
+          <Property Name="GameDesc" Type="text" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="PlayerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PositionID" Type="int" Nullable="false" />
+          <Property Name="Height" Type="float" />
+          <Property Name="BirthDate" Type="date" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="PositionID" />
+          </Key>
+          <Property Name="PositionID" Type="int" Nullable="false" />
+          <Property Name="PositionName" Type="nvarchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roster">
+          <Key>
+            <PropertyRef Name="RosterID" />
+          </Key>
+          <Property Name="RosterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SeasonTeamID" Type="int" Nullable="false" />
+          <Property Name="PlayerID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Season">
+          <Key>
+            <PropertyRef Name="SeasonID" />
+          </Key>
+          <Property Name="SeasonID" Type="int" Nullable="false" />
+          <Property Name="SeasonStart" Type="date" Nullable="false" />
+          <Property Name="SeasonEnd" Type="date" />
+        </EntityType>
+        <EntityType Name="SeasonTeam">
+          <Key>
+            <PropertyRef Name="SeasonTeamID" />
+          </Key>
+          <Property Name="SeasonTeamID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SeasonID" Type="int" Nullable="false" />
+          <Property Name="TeamID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Stats">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="PlayerID" Type="int" Nullable="false" />
+          <Property Name="GameID" Type="int" Nullable="false" />
+          <Property Name="Points" Type="int" />
+          <Property Name="Rebounds" Type="int" />
+          <Property Name="Assists" Type="int" />
+          <Property Name="Steals" Type="int" />
+          <Property Name="Blocks" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeamName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TeamDesc" Type="text" />
+        </EntityType>
+        <Association Name="FK_Game_SeasonTeam">
+          <End Role="SeasonTeam" Type="Self.SeasonTeam" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SeasonTeam">
+              <PropertyRef Name="SeasonTeamID" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="Team1_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_SeasonTeam1">
+          <End Role="SeasonTeam" Type="Self.SeasonTeam" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SeasonTeam">
+              <PropertyRef Name="SeasonTeamID" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="Team2_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player_Position">
+          <End Role="Position" Type="Self.Position" Multiplicity="1" />
+          <End Role="Player" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="PositionID" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="PositionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roster_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Roster" Type="Self.Roster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Roster">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roster_SeasonTeam">
+          <End Role="SeasonTeam" Type="Self.SeasonTeam" Multiplicity="1" />
+          <End Role="Roster" Type="Self.Roster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SeasonTeam">
+              <PropertyRef Name="SeasonTeamID" />
+            </Principal>
+            <Dependent Role="Roster">
+              <PropertyRef Name="SeasonTeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SeasonTeam_Season">
+          <End Role="Season" Type="Self.Season" Multiplicity="1" />
+          <End Role="SeasonTeam" Type="Self.SeasonTeam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Season">
+              <PropertyRef Name="SeasonID" />
+            </Principal>
+            <Dependent Role="SeasonTeam">
+              <PropertyRef Name="SeasonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SeasonTeam_Team">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="SeasonTeam" Type="Self.SeasonTeam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="SeasonTeam">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stats_Game">
+          <End Role="Game" Type="Self.Game" Multiplicity="1" />
+          <End Role="Stats" Type="Self.Stats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="Stats">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stats_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Stats" Type="Self.Stats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Stats">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="bballtest2ModelStoreContainer">
+          <EntitySet Name="Game" EntityType="Self.Game" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roster" EntityType="Self.Roster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Season" EntityType="Self.Season" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SeasonTeam" EntityType="Self.SeasonTeam" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stats" EntityType="Self.Stats" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Team" EntityType="Self.Team" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Game_SeasonTeam" Association="Self.FK_Game_SeasonTeam">
+            <End Role="SeasonTeam" EntitySet="SeasonTeam" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_SeasonTeam1" Association="Self.FK_Game_SeasonTeam1">
+            <End Role="SeasonTeam" EntitySet="SeasonTeam" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player_Position" Association="Self.FK_Player_Position">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roster_Player" Association="Self.FK_Roster_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Roster" EntitySet="Roster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roster_SeasonTeam" Association="Self.FK_Roster_SeasonTeam">
+            <End Role="SeasonTeam" EntitySet="SeasonTeam" />
+            <End Role="Roster" EntitySet="Roster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SeasonTeam_Season" Association="Self.FK_SeasonTeam_Season">
+            <End Role="Season" EntitySet="Season" />
+            <End Role="SeasonTeam" EntitySet="SeasonTeam" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SeasonTeam_Team" Association="Self.FK_SeasonTeam_Team">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="SeasonTeam" EntitySet="SeasonTeam" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stats_Game" Association="Self.FK_Stats_Game">
+            <End Role="Game" EntitySet="Game" />
+            <End Role="Stats" EntitySet="Stats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stats_Player" Association="Self.FK_Stats_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Stats" EntitySet="Stats" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="bballtest2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="GameID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GameTime" Type="Time" Precision="7" />
+          <Property Name="GameDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Team1_ID" Type="Int32" Nullable="false" />
+          <Property Name="Team2_ID" Type="Int32" Nullable="false" />
+          <Property Name="Team1_score" Type="Int32" Nullable="false" />
+          <Property Name="Team2_score" Type="Int32" Nullable="false" />
+          <Property Name="GameDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SeasonTeam" Relationship="Self.FK_Game_SeasonTeam" FromRole="Game" ToRole="SeasonTeam" />
+          <NavigationProperty Name="SeasonTeam1" Relationship="Self.FK_Game_SeasonTeam1" FromRole="Game" ToRole="SeasonTeam" />
+          <NavigationProperty Name="Stats" Relationship="Self.FK_Stats_Game" FromRole="Game" ToRole="Stats" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="PlayerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PositionID" Type="Int32" Nullable="false" />
+          <Property Name="Height" Type="Double" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Position" Relationship="Self.FK_Player_Position" FromRole="Player" ToRole="Position" />
+          <NavigationProperty Name="Rosters" Relationship="Self.FK_Roster_Player" FromRole="Player" ToRole="Roster" />
+          <NavigationProperty Name="Stats" Relationship="Self.FK_Stats_Player" FromRole="Player" ToRole="Stats" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="PositionID" />
+          </Key>
+          <Property Name="PositionID" Type="Int32" Nullable="false" />
+          <Property Name="PositionName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Players" Relationship="Self.FK_Player_Position" FromRole="Position" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Roster">
+          <Key>
+            <PropertyRef Name="RosterID" />
+          </Key>
+          <Property Name="RosterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SeasonTeamID" Type="Int32" Nullable="false" />
+          <Property Name="PlayerID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Player" Relationship="Self.FK_Roster_Player" FromRole="Roster" ToRole="Player" />
+          <NavigationProperty Name="SeasonTeam" Relationship="Self.FK_Roster_SeasonTeam" FromRole="Roster" ToRole="SeasonTeam" />
+        </EntityType>
+        <EntityType Name="Season">
+          <Key>
+            <PropertyRef Name="SeasonID" />
+          </Key>
+          <Property Name="SeasonID" Type="Int32" Nullable="false" />
+          <Property Name="SeasonStart" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SeasonEnd" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="SeasonTeams" Relationship="Self.FK_SeasonTeam_Season" FromRole="Season" ToRole="SeasonTeam" />
+        </EntityType>
+        <EntityType Name="SeasonTeam">
+          <Key>
+            <PropertyRef Name="SeasonTeamID" />
+          </Key>
+          <Property Name="SeasonTeamID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SeasonID" Type="Int32" Nullable="false" />
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_Game_SeasonTeam" FromRole="SeasonTeam" ToRole="Game" />
+          <NavigationProperty Name="Games1" Relationship="Self.FK_Game_SeasonTeam1" FromRole="SeasonTeam" ToRole="Game" />
+          <NavigationProperty Name="Rosters" Relationship="Self.FK_Roster_SeasonTeam" FromRole="SeasonTeam" ToRole="Roster" />
+          <NavigationProperty Name="Season" Relationship="Self.FK_SeasonTeam_Season" FromRole="SeasonTeam" ToRole="Season" />
+          <NavigationProperty Name="Team" Relationship="Self.FK_SeasonTeam_Team" FromRole="SeasonTeam" ToRole="Team" />
+        </EntityType>
+        <EntityType Name="Stat">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="PlayerID" Type="Int32" Nullable="false" />
+          <Property Name="GameID" Type="Int32" Nullable="false" />
+          <Property Name="Points" Type="Int32" />
+          <Property Name="Rebounds" Type="Int32" />
+          <Property Name="Assists" Type="Int32" />
+          <Property Name="Steals" Type="Int32" />
+          <Property Name="Blocks" Type="Int32" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_Stats_Game" FromRole="Stats" ToRole="Game" />
+          <NavigationProperty Name="Player" Relationship="Self.FK_Stats_Player" FromRole="Stats" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeamName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TeamDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SeasonTeams" Relationship="Self.FK_SeasonTeam_Team" FromRole="Team" ToRole="SeasonTeam" />
+        </EntityType>
+        <Association Name="FK_Game_SeasonTeam">
+          <End Role="SeasonTeam" Type="Self.SeasonTeam" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SeasonTeam">
+              <PropertyRef Name="SeasonTeamID" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="Team1_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_SeasonTeam1">
+          <End Role="SeasonTeam" Type="Self.SeasonTeam" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SeasonTeam">
+              <PropertyRef Name="SeasonTeamID" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="Team2_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stats_Game">
+          <End Role="Game" Type="Self.Game" Multiplicity="1" />
+          <End Role="Stats" Type="Self.Stat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="Stats">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player_Position">
+          <End Role="Position" Type="Self.Position" Multiplicity="1" />
+          <End Role="Player" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="PositionID" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="PositionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roster_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Roster" Type="Self.Roster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Roster">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stats_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Stats" Type="Self.Stat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Stats">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roster_SeasonTeam">
+          <End Role="SeasonTeam" Type="Self.SeasonTeam" Multiplicity="1" />
+          <End Role="Roster" Type="Self.Roster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SeasonTeam">
+              <PropertyRef Name="SeasonTeamID" />
+            </Principal>
+            <Dependent Role="Roster">
+              <PropertyRef Name="SeasonTeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SeasonTeam_Season">
+          <End Role="Season" Type="Self.Season" Multiplicity="1" />
+          <End Role="SeasonTeam" Type="Self.SeasonTeam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Season">
+              <PropertyRef Name="SeasonID" />
+            </Principal>
+            <Dependent Role="SeasonTeam">
+              <PropertyRef Name="SeasonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SeasonTeam_Team">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="SeasonTeam" Type="Self.SeasonTeam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="SeasonTeam">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="bballtest2Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Games" EntityType="Self.Game" />
+          <EntitySet Name="Players" EntityType="Self.Player" />
+          <EntitySet Name="Positions" EntityType="Self.Position" />
+          <EntitySet Name="Rosters" EntityType="Self.Roster" />
+          <EntitySet Name="Seasons" EntityType="Self.Season" />
+          <EntitySet Name="SeasonTeams" EntityType="Self.SeasonTeam" />
+          <EntitySet Name="Stats" EntityType="Self.Stat" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Teams" EntityType="Self.Team" />
+          <AssociationSet Name="FK_Game_SeasonTeam" Association="Self.FK_Game_SeasonTeam">
+            <End Role="SeasonTeam" EntitySet="SeasonTeams" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_SeasonTeam1" Association="Self.FK_Game_SeasonTeam1">
+            <End Role="SeasonTeam" EntitySet="SeasonTeams" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stats_Game" Association="Self.FK_Stats_Game">
+            <End Role="Game" EntitySet="Games" />
+            <End Role="Stats" EntitySet="Stats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player_Position" Association="Self.FK_Player_Position">
+            <End Role="Position" EntitySet="Positions" />
+            <End Role="Player" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roster_Player" Association="Self.FK_Roster_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Roster" EntitySet="Rosters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stats_Player" Association="Self.FK_Stats_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Stats" EntitySet="Stats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roster_SeasonTeam" Association="Self.FK_Roster_SeasonTeam">
+            <End Role="SeasonTeam" EntitySet="SeasonTeams" />
+            <End Role="Roster" EntitySet="Rosters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SeasonTeam_Season" Association="Self.FK_SeasonTeam_Season">
+            <End Role="Season" EntitySet="Seasons" />
+            <End Role="SeasonTeam" EntitySet="SeasonTeams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SeasonTeam_Team" Association="Self.FK_SeasonTeam_Team">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="SeasonTeam" EntitySet="SeasonTeams" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="bballtest2ModelStoreContainer" CdmEntityContainer="bballtest2Entities">
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="bballtest2Model.Game">
+              <MappingFragment StoreEntitySet="Game">
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="GameTime" ColumnName="GameTime" />
+                <ScalarProperty Name="GameDate" ColumnName="GameDate" />
+                <ScalarProperty Name="Team1_ID" ColumnName="Team1_ID" />
+                <ScalarProperty Name="Team2_ID" ColumnName="Team2_ID" />
+                <ScalarProperty Name="Team1_score" ColumnName="Team1_score" />
+                <ScalarProperty Name="Team2_score" ColumnName="Team2_score" />
+                <ScalarProperty Name="GameDesc" ColumnName="GameDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="bballtest2Model.Player">
+              <MappingFragment StoreEntitySet="Player">
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="PositionID" ColumnName="PositionID" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Positions">
+            <EntityTypeMapping TypeName="bballtest2Model.Position">
+              <MappingFragment StoreEntitySet="Position">
+                <ScalarProperty Name="PositionID" ColumnName="PositionID" />
+                <ScalarProperty Name="PositionName" ColumnName="PositionName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rosters">
+            <EntityTypeMapping TypeName="bballtest2Model.Roster">
+              <MappingFragment StoreEntitySet="Roster">
+                <ScalarProperty Name="RosterID" ColumnName="RosterID" />
+                <ScalarProperty Name="SeasonTeamID" ColumnName="SeasonTeamID" />
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seasons">
+            <EntityTypeMapping TypeName="bballtest2Model.Season">
+              <MappingFragment StoreEntitySet="Season">
+                <ScalarProperty Name="SeasonID" ColumnName="SeasonID" />
+                <ScalarProperty Name="SeasonStart" ColumnName="SeasonStart" />
+                <ScalarProperty Name="SeasonEnd" ColumnName="SeasonEnd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SeasonTeams">
+            <EntityTypeMapping TypeName="bballtest2Model.SeasonTeam">
+              <MappingFragment StoreEntitySet="SeasonTeam">
+                <ScalarProperty Name="SeasonTeamID" ColumnName="SeasonTeamID" />
+                <ScalarProperty Name="SeasonID" ColumnName="SeasonID" />
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stats">
+            <EntityTypeMapping TypeName="bballtest2Model.Stat">
+              <MappingFragment StoreEntitySet="Stats">
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="Rebounds" ColumnName="Rebounds" />
+                <ScalarProperty Name="Assists" ColumnName="Assists" />
+                <ScalarProperty Name="Steals" ColumnName="Steals" />
+                <ScalarProperty Name="Blocks" ColumnName="Blocks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="bballtest2Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teams">
+            <EntityTypeMapping TypeName="bballtest2Model.Team">
+              <MappingFragment StoreEntitySet="Team">
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="TeamDesc" ColumnName="TeamDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

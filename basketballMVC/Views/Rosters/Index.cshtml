@@ -1,0 +1,89 @@
+﻿@model IEnumerable<basketballMVC.SeasonTeam>
+
+@section Scripts{
+    <script>
+        var pageName = 'Player';
+        $(document).ready(function () {
+            $('[data-toggle="collapse"]').tooltip();
+
+            $('body').on("click", "span[id^='team']", function (e) {
+                e.preventDefault();
+
+                var container = '#' + $(this).attr('id') + '-container';
+
+                $.ajax({
+                    type: 'GET',
+                    url: $(this).attr('href'),
+                    success: function (data) {
+                        $(container).html(data);
+                    }
+                });
+            });
+        });
+    </script>            
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h2>Season Roster</h2>
+
+    @Html.Partial("_Error")
+
+    <p>
+        @Html.ActionLink("Create", "Create", new { id = ViewBag.SeasonId })
+    </p>
+
+    @using (Html.BeginForm())
+    {
+        <span>
+            @Html.DropDownList("seasonID", (SelectList)ViewBag.SeasonDD, new { onchange = "this.form.submit();" })
+        </span>
+        @Html.ActionLink("New Season", "CreateSeason", new { id = ViewBag.SeasonId }, new { @class = "newSeasonModal" })
+        @Html.ActionLink("Details", "SeasonDetails", new { id = ViewBag.SeasonId }, new { @class = "seasonDetailsModal" })
+    }      
+
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayName("Team Name")
+            </th>
+            <th>
+                @Html.DisplayName("Description")
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>
+                    <span id="@string.Format("team{0}", item.SeasonTeamID)" class="glyphicon glyphicon-chevron-down"  data-toggle="collapse" data-target="@string.Format("#collapse{0}", item.SeasonTeamID)" href="@string.Format("/Rosters/RosterList/{0}", item.SeasonTeamID)" style="cursor:pointer" title="Click to show Roster"></span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Team.TeamName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Team.TeamDesc)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.SeasonTeamID}, new { @class = "editModal" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.SeasonTeamID }, new { @class = "deleteModal" })
+                </td>
+            </tr>
+            <tr id="@string.Format("collapse{0}", item.SeasonTeamID)" class="collapse">
+                <td colspan="12" style="text-align: center">
+                    <div id="@string.Format("team{0}-container", item.SeasonTeamID)"></div>
+                </td>
+            </tr>
+        }
+
+    </table>
+</body>
+</html>

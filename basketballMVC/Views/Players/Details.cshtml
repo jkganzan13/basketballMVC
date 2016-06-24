@@ -1,0 +1,61 @@
+﻿@model basketballMVC.Player
+
+@{
+   
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Player</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Height)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Height)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.BirthDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Position.PositionName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Position.PositionName)
+            </dd>    
+        </dl>
+    </div>
+</body>
+</html>

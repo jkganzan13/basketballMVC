@@ -1,0 +1,53 @@
+﻿@model IEnumerable<basketballMVC.Team>
+
+@section Scripts{
+    <script>
+        var pageName = 'Team';
+    </script>
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h2>Team List</h2>
+    <h3>List of Teams</h3>
+
+    @Html.Partial("_Error")
+
+    <p>
+        @Html.ActionLink("Add Team", "Create", "Teams", null, new { @class = "createModal" })
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamDesc)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeamName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeamDesc)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.TeamID }, new { @class = "editModal" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.TeamID }, new { @class = "detailsModal" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.TeamID }, new { @class = "deleteModal" })                
+            </td>
+        </tr>
+    }    
+    </table>
+</body>
+</html>
