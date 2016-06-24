@@ -41,7 +41,7 @@
     $('body').on("click", ".deleteModal", function (e) {
         e.preventDefault();
         var url = $(this).attr('href')
-        bootbox.confirm("Are you sure you want to delete this " + pageName, function (result) {
+        bootbox.confirm({title: 'Delete ' + pageName, message: "Are you sure you want to delete this " + pageName}, function (result) {
             if(result)
                 document.location.href = url;
         });
