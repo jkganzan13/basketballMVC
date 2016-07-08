@@ -195,6 +195,7 @@
     <Compile Include="DAL\ISeasonTeamRepository.cs" />
     <Compile Include="DAL\ITeamRepository.cs" />
     <Compile Include="DAL\RosterRepository.cs" />
+    <Compile Include="DAL\SeasonTeamRepository.cs" />
     <Compile Include="DAL\SeasonRepository.cs" />
     <Compile Include="DAL\TeamRepository.cs" />
     <Compile Include="Game.cs">

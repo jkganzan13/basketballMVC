@@ -9,5 +9,7 @@ namespace basketballMVC.DAL
     public interface ISeasonTeamRepository
     {
         IEnumerable<SeasonTeam> GetTeamsBySeason(int? seasonId);
+        void InsertSeasonTeam(int seasonID, int teamID);
+        void Save();
     }
 }

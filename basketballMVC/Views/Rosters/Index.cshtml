@@ -2,7 +2,7 @@
 
 @section Scripts{
     <script>
-        var pageName = 'Player';
+        var pageName = 'Roster';
         $(document).ready(function () {
             $('[data-toggle="collapse"]').tooltip();
 
@@ -44,7 +44,7 @@
         <span>
             @Html.DropDownList("seasonID", (SelectList)ViewBag.SeasonDD, new { onchange = "this.form.submit();" })
         </span>
-        @Html.ActionLink("New Season", "CreateSeason", new { id = ViewBag.SeasonId }, new { @class = "newSeasonModal" })
+        @Html.ActionLink("New Season", "CreateSeason", null, new { @class = "createSeasonModal" })
         @Html.ActionLink("Details", "SeasonDetails", new { id = ViewBag.SeasonId }, new { @class = "seasonDetailsModal" })
     }      
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace basketballMVC.DAL
 {
-    public interface IRosterRepository : IDisposable, ISeasonTeamRepository
+    public interface IRosterRepository : IDisposable
     {
         IEnumerable<Roster> GetPlayersBySeasonTeam(int? seasonTeamId);
     }

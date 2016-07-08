@@ -10,10 +10,16 @@ namespace basketballMVC.DAL
     {
         private bballtest2Entities db = new bballtest2Entities();
 
-        public int GetRecentSeason()
+        public int GetRecentSeasonID()
         {
-            int max = db.Seasons.Max(s => s.SeasonID);
-            return max;
+            int recent = db.Seasons.Max(s => s.SeasonID);
+            return recent;
+        }
+
+        public int GetNextSeasonID()
+        {
+            int next = GetRecentSeasonID() + 1;
+            return next;
         }
 
         public Season GetSeasonByID(int? seasonId)
@@ -32,15 +38,15 @@ namespace basketballMVC.DAL
             return seasonList;
         }
 
-        //public SelectList GetSeasons(int? seasonId)
-        //{
-        //    var seasonList = db.Seasons.OrderByDescending(s => s.SeasonID).ToList()
-        //        .Select(s => new
-        //        {
-        //            SeasonID = s.SeasonID,
-        //            Desc = "Season " + s.SeasonID
-        //        });
-        //    return new SelectList(seasonList, "SeasonID", "Desc", seasonId);
-        //}
+        public void InsertSeason(Season s)
+        {
+            s.SeasonID = GetNextSeasonID();
+            db.Seasons.Add(s);
+        }
+
+        public void Save()
+        {
+            db.SaveChanges();
+        }
     }
 }

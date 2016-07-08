@@ -22,9 +22,9 @@ namespace basketballMVC
         }
     
         public int SeasonID { get; set; }
-        [DisplayName("Date of Birth"), DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}")]
+        [DisplayName("Season Start"), DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}")]
         public System.DateTime SeasonStart { get; set; }
-        [DisplayName("Date of Birth"), DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}")]
+        [DisplayName("Season End"), DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}")]
         public Nullable<System.DateTime> SeasonEnd { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

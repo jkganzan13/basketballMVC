@@ -3,8 +3,25 @@
         $(".alert").fadeTo(500, 0).slideUp(500, function () {
             $(this).remove();
         });
-    }, 3000);
+    }, 5000);
     $('body').on("click", ".createModal", function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: $(this).attr('href'),
+            success: function (data) {
+                bootbox.dialog({
+                    message: data,
+                    title: "Create a " + pageName,
+                    buttons: {
+                        success: { label: "OK", className: "btn btn-primary", callback: function () { $('#createForm').submit(); } },
+                        main: { label: "Cancel", className: "btn btn-default", callback: function () { return true; } }
+                    }
+                });
+            }
+        });
+    });
+    $('body').on("click", ".createSeasonModal", function (e) {
         e.preventDefault();
         $.ajax({
             type: 'GET',
@@ -47,6 +64,22 @@
         });
     });
     $('body').on("click", ".detailsModal", function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: $(this).attr('href'),
+            success: function (data) {
+                bootbox.dialog({
+                    message: data,
+                    title: pageName + " Details",
+                    buttons: {
+                        main: { label: "Close", className: "btn btn-default", callback: function () { return true; } }
+                    }
+                });
+            }
+        });
+    });
+    $('body').on("click", ".seasonDetailsModal", function (e) {
         e.preventDefault();
         $.ajax({
             type: 'GET',
