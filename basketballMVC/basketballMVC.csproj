@@ -393,6 +393,7 @@
     <Content Include="Views\Shared\_Error.cshtml" />
     <Content Include="Views\Rosters\CreateSeason.cshtml" />
     <Content Include="Views\Rosters\SeasonDetails.cshtml" />
+    <Content Include="Views\Rosters\CreateRoster.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

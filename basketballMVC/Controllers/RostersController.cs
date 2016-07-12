@@ -14,6 +14,7 @@ namespace basketballMVC.Controllers
         private ITeamRepository teamRepository = new TeamRepository();
         private ISeasonRepository seasonRepository = new SeasonRepository();
         private ISeasonTeamRepository seasonTeamRepository = new SeasonTeamRepository();
+        private IPlayerRepository playerRepository = new PlayerRepository();
 
         // GET: Rosters
         public ActionResult Index()
@@ -108,6 +109,25 @@ namespace basketballMVC.Controllers
                 return HttpNotFound();
             }
             return PartialView(season);
+        }
+
+        public ActionResult CreateRoster(int? id)
+        {
+            ViewBag.SeasonID = id.ToString();
+
+            var teamsInSeason = seasonTeamRepository.GetTeamsBySeason(id);
+            ViewBag.TeamList = new SelectList(teamsInSeason, "TeamID", "Team.TeamName");
+
+            ViewBag.PlayerList = playerRepository.GetPlayers();
+            ViewBag.PlayersInRoster = rosterRepository.GetPlayersBySeason(id);
+
+            return PartialView();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRoster(int[] players, string seasonID, string teamID)
+        {
+            return PartialView();
         }
     }
 }

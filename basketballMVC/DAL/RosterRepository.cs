@@ -29,12 +29,19 @@ namespace basketballMVC.DAL
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
+        //Get all players in a specific team
         public IEnumerable<Roster> GetPlayersBySeasonTeam(int? seasonTeamId)
         {
             var rosterList = db.Rosters.Include(r => r.Player).Include(r => r.SeasonTeam)
                 .Where(r => r.SeasonTeamID == seasonTeamId)
                 .OrderBy(r => r.Player.LastName);
+
+            return rosterList.ToList();
+        }
+        //Get all players playing in a specific season
+        public IEnumerable<Roster> GetPlayersBySeason(int? seasonId)
+        {
+            var rosterList = db.Rosters.Where(r => r.SeasonTeam.SeasonID == seasonId);
 
             return rosterList.ToList();
         }

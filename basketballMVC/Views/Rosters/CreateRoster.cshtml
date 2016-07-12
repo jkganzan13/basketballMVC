@@ -1,0 +1,68 @@
+﻿
+@model basketballMVC.Roster
+
+@{
+
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create Season</title>
+</head>
+<body>
+    @using (Html.BeginForm("CreateSeason", "Rosters", FormMethod.Post, new { id = "createForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <fieldset>
+                <legend>Roster Details</legend>
+                <div class="form-group">
+                    Season: @ViewBag.SeasonID
+                </div>
+
+                <div class="form-group">
+                    Team: @Html.DropDownList("TeamList", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Player List</legend>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @{
+                            var players = (List<Player>)ViewBag.PlayerList;
+                            var PlayersInRoster = (List<Roster>)ViewBag.PlayersInRoster;
+                        }
+                        <div class="row">
+                            @for (int i = 0; i < players.Count; i++)
+                            {
+                                if (i % 3 == 0 && i != 0)
+                                {
+                                    @:</div><div class="row">
+                                }
+                                <div class="col-md-3">
+                                    @{ }
+                                    @if (PlayersInRoster.Any(r => r.PlayerID == @players[i].PlayerID))
+                                    {
+                                        <input type="checkbox" disabled="disabled" name="players" value="@players[i].PlayerID" id="@players[i].PlayerID" />
+                                        <label for="@players[i].PlayerID" style="font-weight: normal !important;">@players[i].LastName, @players[i].FirstName</label>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="players" value="@players[i].PlayerID" id="@players[i].PlayerID" />
+                                        <label for="@players[i].PlayerID" style="font-weight: normal !important;">@players[i].LastName, @players[i].FirstName</label>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    }
+</body>
+</html>
